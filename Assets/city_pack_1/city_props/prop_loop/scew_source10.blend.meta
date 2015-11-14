@@ -1,0 +1,105 @@
+fileFormatVersion: 2
+guid: de7bf67856701394ba42ab8327d61c35
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Plane
+    100004: screw_flush
+    100006: hoop_flush
+    100008: hoop_old
+    100010: hooptrigger_flush
+    100012: hooptrigger_flush_old
+    100014: hooptrigger_old
+    400000: //RootNode
+    400002: Plane
+    400004: screw_flush
+    400006: hoop_flush
+    400008: hoop_old
+    400010: hooptrigger_flush
+    400012: hooptrigger_flush_old
+    400014: hooptrigger_old
+    2300000: //RootNode
+    2300002: Plane
+    2300004: screw_flush
+    2300006: hoop_flush
+    2300008: hoop_old
+    2300010: hooptrigger_flush
+    2300012: hooptrigger_flush_old
+    2300014: hooptrigger_old
+    3300000: //RootNode
+    3300002: Plane
+    3300004: screw_flush
+    3300006: hoop_flush
+    3300008: hoop_old
+    3300010: hooptrigger_flush
+    3300012: hooptrigger_flush_old
+    3300014: hooptrigger_old
+    4300000: Plane
+    4300002: screw_flush
+    4300004: hoop_flush
+    4300006: hoop_old
+    4300008: hooptrigger_old
+    4300010: hooptrigger_flush_old
+    4300012: hooptrigger_flush
+    6400000: hoop_flush
+    6400002: hoop_old
+    6400004: hooptrigger_flush
+    6400006: hooptrigger_flush_old
+    6400008: hooptrigger_old
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 1
+    tangentImportMode: 1
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 

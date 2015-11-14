@@ -1,0 +1,135 @@
+fileFormatVersion: 2
+guid: 45597922b96d9c448b2638af10c27d3a
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: bath
+    100002: bed
+    100004: blender
+    100006: cup
+    100008: flossbox
+    100010: mesh_aircleaner
+    100012: mesh_ipod
+    100014: //RootNode
+    100016: toothpaste
+    100018: toothpastebox
+    100020: top_cross0
+    100022: tothbrush
+    100024: bathwater
+    400000: bath
+    400002: bed
+    400004: blender
+    400006: cup
+    400008: flossbox
+    400010: mesh_aircleaner
+    400012: mesh_ipod
+    400014: //RootNode
+    400016: toothpaste
+    400018: toothpastebox
+    400020: top_cross0
+    400022: tothbrush
+    400024: bathwater
+    2300000: bath
+    2300002: bed
+    2300004: blender
+    2300006: cup
+    2300008: flossbox
+    2300010: mesh_aircleaner
+    2300012: mesh_ipod
+    2300014: toothpaste
+    2300016: toothpastebox
+    2300018: top_cross0
+    2300020: tothbrush
+    2300022: bathwater
+    3300000: bath
+    3300002: bed
+    3300004: blender
+    3300006: cup
+    3300008: flossbox
+    3300010: mesh_aircleaner
+    3300012: mesh_ipod
+    3300014: toothpaste
+    3300016: toothpastebox
+    3300018: top_cross0
+    3300020: tothbrush
+    3300022: bathwater
+    4300000: blender
+    4300002: top_cross0
+    4300004: bath
+    4300006: bed
+    4300008: toothpastebox
+    4300010: toothpaste
+    4300012: cup
+    4300014: tothbrush
+    4300016: flossbox
+    4300018: mesh_aircleaner
+    4300020: mesh_ipod
+    4300022: bathwater
+    6400000: bath
+    6400002: bed
+    6400004: blender
+    6400006: cup
+    6400008: flossbox
+    6400010: mesh_aircleaner
+    6400012: mesh_ipod
+    6400014: toothpaste
+    6400016: toothpastebox
+    6400018: top_cross0
+    6400020: tothbrush
+    6400022: bathwater
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 1
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 

@@ -1,0 +1,113 @@
+fileFormatVersion: 2
+guid: 4eb1f305c74de0a4a8b32eadd3878ad6
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: mesh_drivesafe
+    100002: mesh_notinuse
+    100004: //RootNode
+    100006: Text
+    100008: mesh_notinuse_001
+    100010: mesh_notinuse_2mat
+    100012: mesh_smoosh_2mat
+    100014: smoosh_middlemat
+    100016: mesh_smoosh_smooshybit
+    100018: mesh_smoosh_2mat_smoosh
+    100020: mesh_smoosh_2mat_outersmoosh
+    400000: mesh_drivesafe
+    400002: mesh_notinuse
+    400004: //RootNode
+    400006: Text
+    400008: mesh_notinuse_001
+    400010: mesh_notinuse_2mat
+    400012: mesh_smoosh_2mat
+    400014: smoosh_middlemat
+    400016: mesh_smoosh_smooshybit
+    400018: mesh_smoosh_2mat_smoosh
+    400020: mesh_smoosh_2mat_outersmoosh
+    2300000: mesh_drivesafe
+    2300002: mesh_notinuse
+    2300004: Text
+    2300006: mesh_notinuse_001
+    2300008: mesh_notinuse_2mat
+    2300010: mesh_smoosh_2mat
+    2300012: smoosh_middlemat
+    2300014: mesh_smoosh_smooshybit
+    2300016: mesh_smoosh_2mat_smoosh
+    2300018: mesh_smoosh_2mat_outersmoosh
+    3300000: mesh_drivesafe
+    3300002: mesh_notinuse
+    3300004: Text
+    3300006: mesh_notinuse_001
+    3300008: mesh_notinuse_2mat
+    3300010: mesh_smoosh_2mat
+    3300012: smoosh_middlemat
+    3300014: mesh_smoosh_smooshybit
+    3300016: mesh_smoosh_2mat_smoosh
+    3300018: mesh_smoosh_2mat_outersmoosh
+    4300000: mesh_drivesafe
+    4300002: Text
+    4300004: mesh_notinuse
+    4300006: mesh_notinuse_001
+    4300008: mesh_notinuse_2mat
+    4300010: mesh_smoosh_2mat
+    4300012: smoosh_middlemat
+    4300014: mesh_smoosh_smooshybit
+    4300016: mesh_smoosh_2mat_smoosh
+    4300018: mesh_smoosh_2mat_outersmoosh
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 1
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
