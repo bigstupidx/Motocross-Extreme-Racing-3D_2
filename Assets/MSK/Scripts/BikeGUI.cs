@@ -9,6 +9,7 @@ public class BikeGUI : MonoBehaviour
 
 	private int gearst = 0;
 	private float thisAngle = -180;// -150;
+	private float fuelVal = 120f;
 
 //	public Texture2D shiftGUI;
 //	public Texture2D barShiftGUI;
@@ -20,8 +21,11 @@ public class BikeGUI : MonoBehaviour
 	public UILabel gearstUI;
 	[HideInInspector]
 	public UIWidget nitroUI;
+	[HideInInspector]
+	public UIWidget fuelUI;
 
 	BikeControl BikeScript;
+
 	void Start()
 	{
 		BikeScript = transform.GetComponent<BikeControl>(); 
@@ -39,6 +43,8 @@ public class BikeGUI : MonoBehaviour
 	{
 		if(BikeScript ==  null)
 			BikeScript = transform.GetComponent<BikeControl>(); 
+
+		fuelUI.width =Mathf.RoundToInt(BikeScript.fuelVal/BikeControl.StartFuel * 200f);
 
 		nitroUI.width = (int)BikeScript.powerShift * 2;
 		nitroUI.height = 50;

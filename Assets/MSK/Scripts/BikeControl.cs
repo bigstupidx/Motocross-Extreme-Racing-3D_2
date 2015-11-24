@@ -5,14 +5,17 @@ using System.Collections.Generic;
 
 public class BikeControl : MonoBehaviour
 {
-	
+	public static float StartFuel = 10f;
+
+
 	public ParticleSystem wheelParticle;
 	[HideInInspector]
 	public bool showBrakeParticles = false;
 	bool useTilt = false;
-	
-	bool moveUp = false;
-	bool moveDown = false;
+	[HideInInspector]
+	public bool moveUp = false;
+	[HideInInspector]
+	public bool moveDown = false;
 	bool moveLeft = false;
 	bool moveRight = false;
 	bool nitro = false;
@@ -21,7 +24,9 @@ public class BikeControl : MonoBehaviour
 	float moveUpValue = 0f;
 	float moveDownValue = 0f;
 	float stepForValue = 0.1f;//0.01f;
-	
+
+	[HideInInspector]
+	public float fuelVal;
 	// Wheels Setting /////////////////////////////////
 	
 	public BikeWheels bikeWheels;
@@ -432,6 +437,16 @@ public class BikeControl : MonoBehaviour
 			return;
 		OnGround = false;
 
+
+		if ((moveUp || moveDown) && fuelVal > 0f) {
+			fuelVal = Mathf.Max(0f, fuelVal - Time.deltaTime);
+
+			if(fuelVal == 0f)
+			{
+				Game.instance.endOfFuel();
+			}
+		}
+
 		foreach(WheelComponent Wheel in wheels)
 		{
 			if(Wheel.collider.isGrounded){
@@ -454,6 +469,7 @@ public class BikeControl : MonoBehaviour
 			else
 				moveDownValue = -1f;
 		}
+	
 		if (!useTilt) 
 		{
 			if (moveRight) 
@@ -522,8 +538,8 @@ public class BikeControl : MonoBehaviour
 		
 		float accel = 0.0f; // accelerating -1.0 .. 1.0
 		
-		if (Application.platform == RuntimePlatform.Android)
-		{
+		//if (Application.platform == RuntimePlatform.Android)
+		//{
 			if (moveUp && !moveDown)
 				accel = moveUpValue;
 			else if (moveDown && !moveUp)
@@ -542,21 +558,23 @@ public class BikeControl : MonoBehaviour
 			//TODO: eto dlya bali
 			if(shift && shifmotor)
 				accel = 1f;
-		}
-		
-		#if UNITY_EDITOR
-		if (!crash)
-		{
-			
-			steer = Mathf.MoveTowards(steer, Input.GetAxis("Horizontal"), Time.deltaTime * 2.5f);
-			accel = Input.GetAxis("Vertical");
-			shift = Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift);
-		}
-		else
-		{
-			steer = 0;
-		}
-		#endif
+		//}
+
+		if (fuelVal <= 0f)
+			accel = 0f;
+//		#if UNITY_EDITOR
+//		if (!crash)
+//		{
+//			
+//			steer = Mathf.MoveTowards(steer, Input.GetAxis("Horizontal"), Time.deltaTime * 2.5f);
+//			accel = Input.GetAxis("Vertical");
+//			shift = Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift);
+//		}
+//		else
+//		{
+//			steer = 0;
+//		}
+//		#endif
 		foreach (Light brakeLight in bikeLights.brakeLights)
 		{
 			if(/*accel < 0 &&*/ speed > 11f && showBrakeParticles && wheels[1].collider.isGrounded)

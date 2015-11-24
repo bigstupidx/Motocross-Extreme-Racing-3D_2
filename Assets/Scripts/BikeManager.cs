@@ -14,6 +14,7 @@ public class BikeManager : MonoBehaviour {
 	public UILabel speedUI;
 	public UILabel gearstUI;
 	public UIWidget nitroUI;
+	public UIWidget fuelUI;
 	public List<BikeControl> bikesContols;
 	ItemRotator rotator;
 	BikeControl extrabike;
@@ -58,6 +59,7 @@ public class BikeManager : MonoBehaviour {
 			bikeGui.speedUI = speedUI;
 			bikeGui.gearstUI = gearstUI;
 			bikeGui.nitroUI = nitroUI;
+			bikeGui.fuelUI = fuelUI;
 
 			Transform pos = bikePositions.FindChild("Position Extra").transform; 
 			extrabike.rigidbody.velocity = Vector3.zero;
@@ -75,12 +77,14 @@ public class BikeManager : MonoBehaviour {
 
 			GameObject b = GameObject.Find("Motorbike "+(i+1).ToString());
 			BikeControl bikeControl = b.GetComponent<BikeControl>();
+			bikeControl.fuelVal = BikeControl.StartFuel;
 			bikesContols.Add(bikeControl);
 			BikeGUI bikeGui= b.GetComponent<BikeGUI>();
 			bikeGui.arrowUI = arrowUI;
 			bikeGui.speedUI = speedUI;
 			bikeGui.gearstUI = gearstUI;
 			bikeGui.nitroUI = nitroUI;
+			bikeGui.fuelUI = fuelUI;
 			int idPos = Random.Range(1,bikePositions.childCount+1);
 			idPos = 4;
 			Transform pos = bikePositions.FindChild("Position "+(idPos).ToString()).transform; 
@@ -298,5 +302,9 @@ public class BikeManager : MonoBehaviour {
 			bikesContols[i].ToggleControlTypeBtn();
 		}
 		releaseAll ();
+	}
+	public void ReloadFuel()
+	{
+		bikesContols [data.currentBike].fuelVal = BikeControl.StartFuel;
 	}
 }

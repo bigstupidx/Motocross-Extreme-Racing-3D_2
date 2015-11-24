@@ -447,4 +447,17 @@ public class Game : MonoBehaviour {
 		}
 		nitroBtn.transform.localPosition = pos;
 	}
+
+	public GameObject fuelOffMenu;
+
+	public void endOfFuel()
+	{
+		fuelOffMenu.SetActive (true);
+	}
+	public void reloadFuel()
+	{
+		fuelOffMenu.SetActive (false);
+		BikeManager.instance.ReloadFuel ();
+		AdMob_Manager.Instance.showInterstitial ();
+	}
 }
