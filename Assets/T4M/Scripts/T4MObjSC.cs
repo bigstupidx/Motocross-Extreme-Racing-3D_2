@@ -3,75 +3,74 @@ using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
 public class T4MObjSC : MonoBehaviour {
-	[HideInInspector]
+	[HideInInspector] 
 	public string ConvertType = "";
-	[HideInInspector]
+	 [HideInInspector]
 	public bool EnabledLODSystem=true;
-	[HideInInspector]
+	[HideInInspector] 
 	public Vector3[] ObjPosition;
-	[HideInInspector]
+	[HideInInspector] 
 	public T4MLodObjSC[] ObjLodScript ;
-	[HideInInspector]
+	[HideInInspector] 
 	public int[] ObjLodStatus; //0=Occlude // 1=LOD1 // 2=LOD=2 // 3=LOD3
-	[HideInInspector]
+	[HideInInspector] 
 	public float MaxViewDistance= 60.0f;
-	[HideInInspector]
+	[HideInInspector] 
 	public float LOD2Start = 20.0f;
-	[HideInInspector]
+	[HideInInspector] 
 	public float LOD3Start = 40.0f;
-	[HideInInspector]
+	[HideInInspector] 
 	public float Interval = 0.5f;
-	[HideInInspector]
+	[HideInInspector] 
 	public Transform PlayerCamera;
 	private Vector3 OldPlayerPos;
-	[HideInInspector]
+	[HideInInspector] 
 	public int Mode =1;
-	[HideInInspector]
+	[HideInInspector] 
 	public int Master; 
-	[HideInInspector]
+	[HideInInspector] 
 	public bool enabledBillboard=true;
-	[HideInInspector]
+	[HideInInspector] 
 	public Vector3[] BillboardPosition;
-	[HideInInspector]
+	[HideInInspector] 
 	public float BillInterval = 0.05f;
-	[HideInInspector]
+	[HideInInspector] 
 	public int[] BillStatus; //0=Occlude // 1=Active
-	[HideInInspector]
+	[HideInInspector] 
 	public float BillMaxViewDistance= 30.0f;
-	[HideInInspector]
+	[HideInInspector] 
 	public T4MBillBObjSC[] BillScript ;
-	[HideInInspector]
+	[HideInInspector] 
 	public bool enabledLayerCul=true;
-	[HideInInspector]
+	[HideInInspector] 
 	public float BackGroundView  = 1000f;
-	[HideInInspector]
+	[HideInInspector] 
 	public float FarView  = 200.0f;
-	[HideInInspector]
+	[HideInInspector] 
 	public float NormalView = 60.0f;
-	[HideInInspector]
+	[HideInInspector] 
 	public float CloseView = 30.0f;
 	float[] distances = new float[32];
-	[HideInInspector]
+	[HideInInspector] 
 	public int Axis =0;
-	[HideInInspector]
+	[HideInInspector] 
 	public bool LODbasedOnScript = true;
-	[HideInInspector]
+	[HideInInspector] 
 	public bool BilBbasedOnScript = true;
-	[HideInInspector]
+
 	public Material T4MMaterial;
-	[HideInInspector]
 	public MeshFilter T4MMesh;
 	
 	//ATS
-	[HideInInspector]
+	[HideInInspector] 
 	public Color TranslucencyColor= new Color(0.73f,0.85f,0.4f,1f);
-	[HideInInspector]
+	[HideInInspector] 
 	public Vector4 Wind = new Vector4(0.85f,0.075f,0.4f,0.5f);
-	[HideInInspector]
+	[HideInInspector] 
 	public float  WindFrequency = 0.75f;
-	[HideInInspector]
+	[HideInInspector] 
 	public float GrassWindFrequency = 1.5f;
-	[HideInInspector]
+	[HideInInspector] 
 	public bool ActiveWind = false;
 	
 	public bool LayerCullPreview = false;
@@ -125,7 +124,8 @@ public class T4MObjSC : MonoBehaviour {
 				}
 			}
 		}
-	}
+	} public Texture2D T4MMaskTex2d;
+	 public Texture2D T4MMaskTexd;
 	void OnGUI(){
 		if(Application.isPlaying == false && Master ==1){
 			if (LayerCullPreview && enabledLayerCul){

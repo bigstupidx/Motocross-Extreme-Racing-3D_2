@@ -4,11 +4,11 @@ using System.Collections;
 
  public class T4MLodObjSC : MonoBehaviour {
 
-	[HideInInspector]
+	//[HideInInspector]
 	public Renderer LOD1;
-	[HideInInspector]
+	//[HideInInspector]
 	public Renderer LOD2;
-	[HideInInspector]
+	//[HideInInspector]
 	public Renderer LOD3;
 	
 	//Lod 2.0

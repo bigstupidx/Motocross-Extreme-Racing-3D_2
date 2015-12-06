@@ -141,12 +141,12 @@ public class AdMob_Manager : MonoBehaviour {
 	}
 	void Update()
 	{
-		curTime+=Time.deltaTime;
+		/*curTime+=Time.deltaTime;
 		if(curTime > timeForIntersentialRepeat && GoTo.currentScene == "main_game_megaCity")
 			{
 				curTime = 0f;
 				showInterstitial();
-			}
+			}*/
 	}
 	// Not yet used or tested but should work
 	public IEnumerator waitForInterstitialLoad()

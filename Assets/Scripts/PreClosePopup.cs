@@ -21,7 +21,7 @@ public class PreClosePopup : MonoBehaviour {
 	}
 	public void rate()
 	{
-		Application.OpenURL ("https://play.google.com/store/apps/details?id=com.i6.rc_motorbike_racing_3d");
+		Application.OpenURL ("https://play.google.com/store/apps/details?id=com.i6.motocrossExtremeRacing3D");
 	}
 	public void resumeGame()
 	{

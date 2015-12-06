@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class BikeControl : MonoBehaviour
 {
-	public static float StartFuel = 10f;
+	public static float StartFuel = 120f;
 
 
 	public ParticleSystem wheelParticle;
@@ -370,12 +370,12 @@ public class BikeControl : MonoBehaviour
 		
 	}
 	
-	//	void OnTriggerEnter(Collider other) {
-	//		if(other.name.Equals("Water"))
-	//		{
-	//			Game.instance.OnTouchZone();
-	//		}
-	//	}
+		void OnTriggerEnter(Collider other) {
+			if(other.name.Equals("Water"))
+			{
+				Game.instance.OnTouchZone();
+			}
+		}
 	
 	// handle shifting a gear up
 	public void ShiftUp()
@@ -438,7 +438,7 @@ public class BikeControl : MonoBehaviour
 		OnGround = false;
 
 
-		if ((moveUp || moveDown) && fuelVal > 0f) {
+		if ((speed > 10f) && fuelVal > 0f) {
 			fuelVal = Mathf.Max(0f, fuelVal - Time.deltaTime);
 
 			if(fuelVal == 0f)

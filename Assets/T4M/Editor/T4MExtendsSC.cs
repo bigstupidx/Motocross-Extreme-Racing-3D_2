@@ -7,7 +7,7 @@ using System.Collections;
 [CanEditMultipleObjects]
 public class T4MExtendsSC : Editor {
 	int layerMask = 1073741824;
-	bool ToggleF;
+	bool ToggleF = false;
 	Texture2D[] UndoObj;
 	static Color[] terrainBay2;
 	GameObject PlantObj;
@@ -58,7 +58,7 @@ public class T4MExtendsSC : Editor {
 		}
 		
 	}
-	
+
 	void Painter (){
 		if (State != 1)
 			State = 1;
@@ -96,8 +96,7 @@ public class T4MExtendsSC : Editor {
 		if(Physics.Raycast(terrain, out raycastHit, Mathf.Infinity,layerMask)){
 				if (T4MSC.CurrentSelect.gameObject.GetComponent <T4MObjSC>().ConvertType !="UT")
 					T4MSC.T4MPreview.transform.localEulerAngles = new Vector3(90,180+T4MSC.CurrentSelect.localEulerAngles.y,0);
-				else T4MSC.T4MPreview.transform.localEulerAngles = new Vector3(90,-90+T4MSC.CurrentSelect.localEulerAngles.y,0);
-			
+                else T4MSC.T4MPreview.transform.localEulerAngles = new Vector3(90, T4MSC.CurrentSelect.localEulerAngles.y, 0);
 					T4MSC.T4MPreview.transform.position = raycastHit.point;
 					
 				if(T4MSC.PaintPrev != T4MSC.PaintHandle.Classic && T4MSC.PaintPrev != T4MSC.PaintHandle.Hide_preview &&  T4MSC.PaintPrev != T4MSC.PaintHandle.Follow_Normal_WireCircle){
@@ -117,10 +116,8 @@ public class T4MExtendsSC : Editor {
 					int width = Mathf.Clamp (( PuX + T4MSC.T4MBrushSizeInPourcent / 2) , 0, T4MSC.T4MMaskTex.width) - x;
 					int height = Mathf.Clamp ((PuY + T4MSC.T4MBrushSizeInPourcent / 2), 0, T4MSC.T4MMaskTex.height) - y;
 					Color[] terrainBay =  T4MSC.T4MMaskTex.GetPixels (x, y, width, height, 0);
-					
 					if(T4MSC.T4MMaskTex2)
 						terrainBay2 = T4MSC.T4MMaskTex2.GetPixels(x, y, width, height, 0);
-					
 					for (int i = 0; i < height; i++) {
 						for (int j = 0; j < width; j++) {
 							int index = (i * width) + j;
@@ -142,20 +139,19 @@ public class T4MExtendsSC : Editor {
 						T4MSC.T4MMaskTex2.SetPixels(x, y, width,height, terrainBay2, 0);
 						T4MSC.T4MMaskTex2.Apply();
 						UndoObj = new Texture2D[2];
-						UndoObj[0] = T4MSC.T4MMaskTex;
-						UndoObj[1] = T4MSC.T4MMaskTex2;
+                        UndoObj[0] = T4MSC.T4MMaskTex;
+                        UndoObj[1] = T4MSC.T4MMaskTex2;
 					}else{
 						UndoObj = new Texture2D[1];
 						UndoObj[0] = T4MSC.T4MMaskTex;
 					}
-					Undo.RegisterUndo(UndoObj, "T4MMask");
-					
+                    //Undo.RecordObjects(UndoObj, "T4MMask"); //Unity don't work correctly with this for now
 					ToggleF = true;	
 					
 				}else if (e.type ==  EventType.mouseUp && e.alt == false && e.button == 0 && ToggleF == true){
+                    
 					T4MSC.SaveTexture();
 					ToggleF = false;
-						
 				}
 			}
 		}

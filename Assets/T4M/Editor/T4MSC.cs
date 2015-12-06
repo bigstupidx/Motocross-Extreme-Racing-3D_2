@@ -236,10 +236,6 @@ public class T4MSC : EditorWindow {
 	Material LOD3Material;
 	TerrainData terrain;
 	
-	
-		
-		
-		
 	EnumShaderGLES2 MenuTextureSM2 = EnumShaderGLES2.T4M_4_Textures_HighSpec;
 	EnumShaderGLES1 MenuTextureSM1 = EnumShaderGLES1.T4M_2_Textures_Auto_BeastLM_2DrawCall;
 	EnumShaderGLES3 MenuTextureSM3 = EnumShaderGLES3.T4M_4_Textures_Diffuse;
@@ -390,15 +386,20 @@ public class T4MSC : EditorWindow {
 					}else{
 						T4MActived = "Activated";
 					}
-				
 			}
 			GUILayout.EndHorizontal();
 				GUILayout.Label(Resources.LoadAssetAtPath(T4MEditorFolder+"Img/separator.png", typeof(Texture))as Texture);
+		
 				if(CurrentSelect != null && T4MActived =="Activated"){
+					if(CurrentSelect.GetComponent <T4MPartSC>()){
+						Selection.activeTransform = CurrentSelect.parent;
+					}
 					
+					Renderer[] rendererPart = CurrentSelect.GetComponentsInChildren<Renderer>();
 			
-					if (CurrentSelect.GetComponent <T4MObjSC>() && !CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial ||CurrentSelect.GetComponent <T4MObjSC>() && !CurrentSelect.gameObject.GetComponent<T4MObjSC>().T4MMesh){
-						Renderer[] rendererPart = CurrentSelect.GetComponentsInChildren<Renderer>();
+					
+					if (CurrentSelect.GetComponent <T4MObjSC>() && (!CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial || !CurrentSelect.gameObject.GetComponent<T4MObjSC>().T4MMesh)){
+						
 						if (rendererPart.Length==0){
 							CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial = CurrentSelect.renderer.sharedMaterial;
 							CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMesh = CurrentSelect.gameObject.GetComponent<MeshFilter>();
@@ -416,11 +417,18 @@ public class T4MSC : EditorWindow {
 							T4MMaster =true;
 							initMaster = true; 
 						}
-						Renderer[] rendererPart = CurrentSelect.GetComponentsInChildren<Renderer>();
 						if (rendererPart.Length==0){
+							if(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial != CurrentSelect.renderer.sharedMaterial)
+								CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial = CurrentSelect.renderer.sharedMaterial;
 							EditorUtility.SetSelectedWireframeHidden(CurrentSelect.renderer, true);
 						}else {
+							if(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial != rendererPart[0].sharedMaterial){
+								CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial = rendererPart[0].sharedMaterial;
+							}
 							for (int i=0;i<rendererPart.Length;i++){
+								if(rendererPart[i].sharedMaterial != rendererPart[0].sharedMaterial){
+									rendererPart[i].sharedMaterial = rendererPart[0].sharedMaterial;
+								}
 								EditorUtility.SetSelectedWireframeHidden(rendererPart[i], true);
 							}
 						}
@@ -429,9 +437,7 @@ public class T4MSC : EditorWindow {
 						int countchild = CurrentSelect.transform.childCount;
 						if (countchild>0){
 							NbrPartObj = CurrentSelect.transform.GetComponentsInChildren<Renderer>();
-							//Debug.Log(NbrPartObj.Length.ToString());
 						}
-						
 					}
 					
 					switch (T4MMenuToolbar)
@@ -2746,8 +2752,25 @@ public class T4MSC : EditorWindow {
 				GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
 					
-			EditorGUILayout.Space();
 			
+			GUILayout.Label("Cleaning Scene", EditorStyles.boldLabel);
+			GUILayout.BeginHorizontal();
+				GUILayout.FlexibleSpace();
+				if (GUILayout.Button("Cleaning Now", GUILayout.Width(200), GUILayout.Height(20))) {
+					MeshRenderer[] prev = GameObject.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+					foreach(MeshRenderer go in prev)
+					{
+						if(go.hideFlags == HideFlags.HideInHierarchy)
+						{
+							go.hideFlags=0;
+							DestroyImmediate (go.gameObject);
+						}
+					}
+					EditorUtility.DisplayDialog("Scene Cleaned", "", "OK");
+				}
+				GUILayout.FlexibleSpace();
+			GUILayout.EndHorizontal();
+				EditorGUILayout.Space();
 			switch (EnumMyT4MV)
 			{
 				case 0:
@@ -2755,7 +2778,6 @@ public class T4MSC : EditorWindow {
 				
 				ShaderModel =(SM) EditorGUILayout.EnumPopup ("Shader Model", ShaderModel, GUILayout.Width(340));
 				
-				EditorGUILayout.Space();
 				
 				if (ShaderModel == SM.ShaderModel1){
 					MenuTextureSM1 =(EnumShaderGLES1) EditorGUILayout.EnumPopup ("Shader", MenuTextureSM1, GUILayout.Width(340));
@@ -2769,8 +2791,6 @@ public class T4MSC : EditorWindow {
 		
 				if (ShaderModel != SM.CustomShader){
 				GUILayout.Label("Shader Compatibility", EditorStyles.boldLabel);
-						EditorGUILayout.Space();
-						EditorGUILayout.Space();
 						GUILayout.BeginHorizontal();
 							GUILayout.Label("GLES 1.1",GUILayout.Width(300));
 							if(ShaderModel != SM.ShaderModel3 && ShaderModel != SM.ShaderModel2)
@@ -2825,6 +2845,8 @@ public class T4MSC : EditorWindow {
 					}
 				
 				EditorGUILayout.Space();
+				
+				
 				GUILayout.BeginHorizontal();
 				GUILayout.Label("Master T4M Object", EditorStyles.boldLabel, GUILayout.Width(150));
 				
@@ -2837,29 +2859,35 @@ public class T4MSC : EditorWindow {
 						GUILayout.BeginVertical("box");	
 						
 							GUILayout.BeginHorizontal();
-							GUILayout.Label("Scene Camera", EditorStyles.boldLabel, GUILayout.Width(220));
+							GUILayout.Label("Scene Camera", EditorStyles.boldLabel, GUILayout.Width(190));
 							PlayerCam= EditorGUILayout.ObjectField(PlayerCam, typeof(Transform),true) as Transform;
 						GUILayout.EndHorizontal();
 						GUILayout.BeginHorizontal();
-							GUILayout.Label("Activate LOD System  ", EditorStyles.boldLabel, GUILayout.Width(220));
+							GUILayout.Label("Activate LOD System  ", EditorStyles.boldLabel, GUILayout.Width(190));
 							ActivatedLOD = EditorGUILayout.Toggle(ActivatedLOD);
+							GUILayout.Label("   Editor Preview", EditorStyles.boldLabel, GUILayout.Width(120));
+							CurrentSelect.GetComponent<T4MObjSC>().LODPreview = EditorGUILayout.Toggle(CurrentSelect.GetComponent<T4MObjSC>().LODPreview);
+							
 						GUILayout.EndHorizontal();
 						
 						GUILayout.BeginHorizontal();
-							GUILayout.Label("Activate Billboard System  ", EditorStyles.boldLabel, GUILayout.Width(220));
+							GUILayout.Label("Activate Billboard System  ", EditorStyles.boldLabel, GUILayout.Width(190));
 							ActivatedBillboard = EditorGUILayout.Toggle(ActivatedBillboard);
+							GUILayout.Label("   Editor Preview", EditorStyles.boldLabel, GUILayout.Width(120));
+							CurrentSelect.GetComponent<T4MObjSC>().BillboardPreview = EditorGUILayout.Toggle(CurrentSelect.GetComponent<T4MObjSC>().BillboardPreview);
 						GUILayout.EndHorizontal();
 						
 						GUILayout.BeginHorizontal();
-							GUILayout.Label("Activate LayerCullDistance  ", EditorStyles.boldLabel, GUILayout.Width(220));
+							GUILayout.Label("Activate LayerCullDistance  ", EditorStyles.boldLabel, GUILayout.Width(190));
 							ActivatedLayerCul = EditorGUILayout.Toggle(ActivatedLayerCul);
+							GUILayout.Label("   Editor Preview", EditorStyles.boldLabel, GUILayout.Width(120));
+							CurrentSelect.GetComponent<T4MObjSC>().LayerCullPreview = EditorGUILayout.Toggle(CurrentSelect.GetComponent<T4MObjSC>().LayerCullPreview);
 						GUILayout.EndHorizontal();
 						EditorGUILayout.Space();
 						if (ActivatedLayerCul){
 							GUILayout.BeginVertical("box");
 						
 								GUILayout.Label("Maximum distances of view", EditorStyles.boldLabel, GUILayout.Width(220));
-								EditorGUILayout.Space();
 								CloseDistMaxView = EditorGUILayout.Slider("Close Distance",CloseDistMaxView,0,500);	
 								NormalDistMaxView = EditorGUILayout.Slider("Middle Distance",NormalDistMaxView,0,500);	
 								FarDistMaxView = EditorGUILayout.Slider("Far Distance",FarDistMaxView,0,500);
@@ -2878,7 +2906,7 @@ public class T4MSC : EditorWindow {
 						GUILayout.FlexibleSpace();
 							GUILayout.BeginHorizontal();
 								GUILayout.FlexibleSpace();
-										if (GUILayout.Button("UPDATE", GUILayout.Width(100), GUILayout.Height(30))) {
+										if (GUILayout.Button("UPDATE", GUILayout.Width(100), GUILayout.Height(25))) {
 											MyT4MApplyChange();
 							
 										}
@@ -3293,8 +3321,9 @@ public class T4MSC : EditorWindow {
 		int x  =0;
         for (y = 0; y < h; y++) {
 			for ( x = 0; x < w; x++) {
-                tVertices[y*w + x] = Vector3.Scale(meshScale, new Vector3(x, tData[(int)(x*tRes),(int)(y*tRes)], y));
-                tUV[y*w + x] = Vector2.Scale(new Vector2(y*tRes, x*tRes), uvScale);
+                //tVertices[y*w + x] = Vector3.Scale(meshScale, new Vector3(x, tData[(int)(x*tRes),(int)(y*tRes)], y));
+                tVertices[y*w + x] = Vector3.Scale(meshScale, new Vector3(-y, tData[(int)(x*tRes),(int)(y*tRes)], x)); //Thank Cid Newman
+				tUV[y*w + x] = Vector2.Scale(new Vector2(y*tRes, x*tRes), uvScale);
             }
         }
 		
@@ -3463,7 +3492,7 @@ public class T4MSC : EditorWindow {
 		DestroyImmediate(forRotate);
 		Child.name = FinalExpName;
 		Child.AddComponent("T4MObjSC");
-		Child.transform.rotation= Quaternion.Euler(0, 90, 0);
+		//Child.transform.rotation= Quaternion.Euler(0, 90, 0);
 		
 		UpdateProgress();
 				
