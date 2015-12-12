@@ -127,7 +127,7 @@ public class Game : MonoBehaviour {
 		circleRemaining -= data.GetFoundItemsCount ();
 		hideFoundItems ();
 		showScore ();
-		//StartCoroutine (checkBanner ());
+		StartCoroutine (checkBanner ());
 	}
 
 	IEnumerator checkBanner()

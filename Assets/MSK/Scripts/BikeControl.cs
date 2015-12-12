@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class BikeControl : MonoBehaviour
 {
-	public static float StartFuel = 120f;
+	public static float StartFuel = 10f;
 
 
 	public ParticleSystem wheelParticle;

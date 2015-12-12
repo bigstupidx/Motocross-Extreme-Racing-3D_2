@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AdMob_Manager : MonoBehaviour {
 	
@@ -36,7 +37,30 @@ public class AdMob_Manager : MonoBehaviour {
 	private bool memBannerState = false;
 	
 	private bool _isAdvertsEnabled = true;
+
+
+	// Is admob enabled? Will any banners or interstitials be triggered?
+	public bool EnableAdMob = true;
 	
+	// Should we be in test mode for testing ads?
+	public bool EnableTestMode = false;
+	
+	// Should an interstitial be LOADED (Not shown) when this script starts?
+	public bool IntLoadOnStart = false;
+	
+	// Shown an interstitial be LOADED (Not shown) as soon as a previous interstitial is closed (always keeping an interstitial ready in memory)
+	public bool IntAutoReload = false;
+	
+	// Should a banner be LOADED (Not shown) when this script starts?
+	public bool BannerLoadOnStart = false;
+	
+	public bool BannerShowOnStart = false;
+	
+	// Banner type which will be loaded on start
+	public AdmobAd.BannerAdType BannerLoadOnStartType;
+	
+	// Position of banner which will be loaded on start
+	public AdmobAd.AdLayout BannerLoadOnStartPos;
 	// These public variables are using a public get and private set to allow us to get this information 
 	// from this script but not allow us to change the values externally
 	public bool isInterstitialReady { 
@@ -73,9 +97,66 @@ public class AdMob_Manager : MonoBehaviour {
 		get { return _isAdvertsEnabled; }
 		private set { _isAdvertsEnabled = value; }
 	}
-	
+	public bool BannerWantedVisible { get; private set; }
 	private static bool _instanceFound = false;
+
+	// Cache the type of the current banner in memory so we can process calls to LoadBanner again to change certain things without needing to actually request another banner
+	private AdmobAd.BannerAdType BannerInMemoryType;
+	private AdmobAd.AdLayout BannerInMemoryLayout;
 	
+	// If we're hiding a banner due to an overlay (popup box or backscreen) then we want to remember the ad state when that is closed
+	public bool BannerPrevState { get; private set; }
+	
+	// Sometimes we like to overlay our overlays but still want to remember our original banner state
+	public int BannerOverlayDepth { get; private set; }
+	
+	public Dictionary<string, ActionStateItems> ActionState = new Dictionary<string, ActionStateItems>();
+	
+	// Should debug messages be logged?
+	public bool DebugLogging = false;
+	
+	public bool InterstitialWaitScreenEnabled = true;
+	
+	// Screen to show before an interstitial pops
+	public GameObject InterstitialWaitScreen;
+	
+	// Time to wait before displaying interstitial after InterstitialWaitScreen has appeared
+	public float InterstitialWaitTime = 1f;
+	
+	// An Instance to the AdmobAd Instance (AdmobAd.Instance())
+	private AdmobAd AdIns;
+	public class ActionStateItems
+	{
+		public List<ActionStateChecks> items = new List<ActionStateChecks>();
+		
+		public void UpdateItems(List<bool> inItems)
+		{
+			if(items.Count != inItems.Count)
+				Debug.Log ("Invalid inItem count!");
+			
+			for(int i=0;i < items.Count;i++)
+				items[i].State = inItems[i];
+		}
+	}
+	public class ActionStateChecks
+	{
+		public bool State { get; set; }
+		public string LogMessage { get; private set; }
+		
+		public ActionStateChecks(bool inState, string inLogMessage)
+		{
+			State = inState;
+			LogMessage = inLogMessage;
+		}
+	}
+	private void DebugLog(string Message, bool IgnoreDebugSetting = false)
+	{
+		if(!DebugLogging && !IgnoreDebugSetting)
+			return;
+		
+		// Prepend AdMobManager to the debug output to make it easier to filter in logcat
+		Debug.Log ("AdMobManager " + Message);
+	}
 	void Awake()
 	{
 		if(!Instance){
@@ -218,7 +299,96 @@ public class AdMob_Manager : MonoBehaviour {
 			GoogleAnalytics.Instance.LogError("Interstital was requested but it wasn't ready", false);
 		}
 	}
+	public void RepositionBanner(int xPos, int yPos, AdmobAd.AdLayout AdLayout = AdmobAd.AdLayout.Top_Left)
+	{
+		if(!EnableAdMob)
+			return;
+		
+		// Get the name of the current method
+		string MethodName = "RepositionBanner";
+		
+		DebugLog(MethodName + " called");
+		
+		// Update the state items (Values used to determine if the action in this method should be ran)
+		//ActionState[MethodName].UpdateItems(new List<bool>(){ isBannerReady });
+		
+		// Check if we can perform the action for the current method
+		//if(CanPerformAction(MethodName, ActionState[MethodName].items)){
+		// Reposition the banner
+		AdIns.RepositionBannerAd(AdLayout, xPos, yPos);
+		//}
+	}
 	
+	/// <summary>
+	/// Shows a banner advert if one is loaded in memory.
+	/// </summary>
+	public void ShowBanner()
+	{
+		if(!EnableAdMob)
+			return;
+		
+		// Get the name of the current method
+		string MethodName = "ShowBanner";
+		
+		DebugLog(MethodName + " called");
+		
+		// Check if we're calling ShowBanner because we're returning from an overlay screen which hid the banner
+		if(BannerOverlayDepth > 0){
+			// Decrease the overlay depth by 1
+			BannerOverlayDepth--;
+			
+			// If the overlay depth is still above 0 then there must still be some overlays open
+			if(BannerOverlayDepth > 0)
+				return;
+			
+			// There isn't any more overlaying menus open, return to the previous banner ad state
+			BannerWantedVisible = BannerPrevState;
+			
+			DebugLog ("Banner wanted set to prev state: " + BannerPrevState);
+		} else {
+			BannerWantedVisible = true;
+		}
+		
+		if(!BannerWantedVisible)
+			return;
+		
+		// Update the state items (Values used to determine if the action in this method should be ran)
+		ActionState[MethodName].UpdateItems(new List<bool>(){ !isBannerVisible });
+		
+		// Check if we can perform the action for the current method
+		if(CanPerformAction(MethodName, ActionState[MethodName].items)){
+			if(isBannerReady){
+				// Show the banner
+				AdIns.ShowBannerAd();
+			} else {
+				LoadBanner(true, true);
+			}
+		}
+	}
+	private void LoadBanner(bool DisplayImmediately, bool ForcedInternalCall)
+	{
+		if(ForcedInternalCall){
+			loadBanner(BannerInMemoryType, BannerInMemoryLayout, false);
+			BannerWantedVisible = DisplayImmediately;
+		} else {
+			loadBanner(BannerInMemoryType, BannerInMemoryLayout, DisplayImmediately);
+		}
+	}
+	private bool CanPerformAction(string ActionName, List<ActionStateChecks> ActionChecks)
+	{
+		// Iterate through the checks in the current item
+		for(int i=0;i < ActionChecks.Count;i++)
+		{
+			// Return false and log the event if any of the check states are false
+			if(!ActionChecks[i].State){
+				//GoogleAnalytics.Instance.LogEvent("AdMob", ActionName + " failed", ActionChecks[i].LogMessage);
+				DebugLog(ActionName + " failed - " + ActionChecks[i].LogMessage);
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	// Show the banner advert
 	public void showBanner(bool overlapScreen = false, bool force = false)
 	{
