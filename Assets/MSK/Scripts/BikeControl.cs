@@ -369,13 +369,35 @@ public class BikeControl : MonoBehaviour
 		}
 		
 	}
-	
-		void OnTriggerEnter(Collider other) {
-			if(other.name.Equals("Water"))
-			{
-				Game.instance.OnTouchZone();
+
+	int waterCount = 0;
+
+	void OnTriggerEnter(Collider other) {
+		if(other.name.Equals("Water"))
+		{
+			//Game.instance.OnTouchZone();
+			if(waterCount <= 0 ){
+				StartCoroutine(waterWaiting());
 			}
+			waterCount++;
 		}
+	}
+
+	IEnumerator waterWaiting(){
+		yield return new WaitForSeconds (3f);
+		if (waterCount > 0) {
+			Game.instance.OnTouchZone();
+		}
+		yield return null;
+	}
+
+	void OnTriggerExit(Collider other) {
+		if(other.name.Equals("Water"))
+		{
+			waterCount--;
+			//Game.instance.OnTouchZone();
+		}
+	}
 	
 	// handle shifting a gear up
 	public void ShiftUp()
@@ -538,8 +560,8 @@ public class BikeControl : MonoBehaviour
 		
 		float accel = 0.0f; // accelerating -1.0 .. 1.0
 		
-		//if (Application.platform == RuntimePlatform.Android)
-		//{
+		if (Application.platform == RuntimePlatform.Android)
+		{
 			if (moveUp && !moveDown)
 				accel = moveUpValue;
 			else if (moveDown && !moveUp)
@@ -558,23 +580,23 @@ public class BikeControl : MonoBehaviour
 			//TODO: eto dlya bali
 			if(shift && shifmotor)
 				accel = 1f;
-		//}
+		}
 
 		if (fuelVal <= 0f)
 			accel = 0f;
-//		#if UNITY_EDITOR
-//		if (!crash)
-//		{
-//			
-//			steer = Mathf.MoveTowards(steer, Input.GetAxis("Horizontal"), Time.deltaTime * 2.5f);
-//			accel = Input.GetAxis("Vertical");
-//			shift = Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift);
-//		}
-//		else
-//		{
-//			steer = 0;
-//		}
-//		#endif
+		#if UNITY_EDITOR
+		if (!crash)
+		{
+
+			steer = Mathf.MoveTowards(steer, Input.GetAxis("Horizontal"), Time.deltaTime * 2.5f);
+			accel = Input.GetAxis("Vertical");
+			shift = Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift);
+		}
+		else
+		{
+			steer = 0;
+		}
+		#endif
 		foreach (Light brakeLight in bikeLights.brakeLights)
 		{
 			if(/*accel < 0 &&*/ speed > 11f && showBrakeParticles && wheels[1].collider.isGrounded)
