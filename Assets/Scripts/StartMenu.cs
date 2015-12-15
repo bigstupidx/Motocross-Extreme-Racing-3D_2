@@ -20,7 +20,7 @@ public class StartMenu : MonoBehaviour {
 		//GoTo.LoadMegaCity ();
 		GoTo.LoadNewShop ();
 		//StartCoroutine (showIntersential ());
-		AdMob_Manager.Instance.curTime = 0f;
+//		AdMob_Manager.Instance.curTime = 0f;
 		//Razkomentit' esli ando pogasit' baner
 		//AdMob_Manager.Instance.hideBanner ();
 		//GoTo.LoadEnvironmentChoose();
@@ -28,7 +28,7 @@ public class StartMenu : MonoBehaviour {
 	IEnumerator showIntersential()
 	{
 		yield return new WaitForEndOfFrame ();
-		AdMob_Manager.Instance.showInterstitial ();
+		AdMob_Manager.Instance.ShowInterstitial ();
 		yield return null;
 	}
 	public void onShopPress()
@@ -45,7 +45,8 @@ public class StartMenu : MonoBehaviour {
 	void Start()
 	{
 		IAS_Manager.Instance.ResetMainBanners(); 
-		AdMob_Manager.Instance.showBanner (false, true);
+		//AdMob_Manager.Instance.showBanner (false, true);
+		AdMob_Manager.Instance.LoadBanner (AdmobAd.BannerAdType.Tablets_IAB_MRect_300x250,AdmobAd.AdLayout.Top_Left,false);
 	}
 	void Update()
 	{

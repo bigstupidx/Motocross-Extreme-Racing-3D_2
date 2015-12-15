@@ -127,20 +127,20 @@ public class Game : MonoBehaviour {
 		circleRemaining -= data.GetFoundItemsCount ();
 		hideFoundItems ();
 		showScore ();
-		StartCoroutine (checkBanner ());
+		//StartCoroutine (checkBanner ());
 	}
 
-	IEnumerator checkBanner()
-	{
-		yield return new WaitForEndOfFrame ();
-		while(true)
-		{
-			if(AdMob_Manager.Instance.isBannerVisible)
-				AdMob_Manager.Instance.hideBanner();
-			yield return new WaitForSeconds(1f);
-		}
-		yield return null;
-	}
+//	IEnumerator checkBanner()
+//	{
+//		yield return new WaitForEndOfFrame ();
+//		while(true)
+//		{
+//			if(AdMob_Manager.Instance.BannerIsVisible)
+//				AdMob_Manager.Instance.HideBanner();
+//			yield return new WaitForSeconds(1f);
+//		}
+//		yield return null;
+//	}
 
 	void hideFoundItems ()
 	{
@@ -194,7 +194,7 @@ public class Game : MonoBehaviour {
 	public void OnMissionShowClick()
 	{
 		missionShow.SetActive (false);
-		GameObject.Find ("AdmobAdAgent").GetComponent<AdMob_Manager> ().showBanner();
+		//GameObject.Find ("AdmobAdAgent").GetComponent<AdMob_Manager> ().showBanner();
 	}
 
 	public void StartGame(bool toHideLRButtons)
@@ -458,6 +458,7 @@ public class Game : MonoBehaviour {
 	{
 		fuelOffMenu.SetActive (false);
 		BikeManager.instance.ReloadFuel ();
-		AdMob_Manager.Instance.showInterstitial ();
+		AdMob_Manager.Instance.HideBanner ();
+		AdMob_Manager.Instance.ShowInterstitial ();
 	}
 }

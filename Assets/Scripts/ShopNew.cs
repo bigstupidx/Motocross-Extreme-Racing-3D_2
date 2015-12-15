@@ -135,7 +135,7 @@ public class ShopNew : MonoBehaviour {
 	IEnumerator showIntersential()
 	{
 		yield return new WaitForEndOfFrame ();
-		AdMob_Manager.Instance.showInterstitial ();
+		AdMob_Manager.Instance.ShowInterstitial ();
 		yield return null;
 	}
 

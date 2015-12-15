@@ -49,7 +49,7 @@ public class EnvironmentChoose : MonoBehaviour {
 	{
 		if(lvl > data.allowLvls) return;
 
-		GameObject.Find ("AdmobAdAgent").GetComponent<AdMob_Manager> ().hideBanner ();
+		GameObject.Find ("AdmobAdAgent").GetComponent<AdMob_Manager> ().HideBanner ();
 		loadScreen.SetActive (true);
 		data.currentLvl = lvl;
 		data.save ();
