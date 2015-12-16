@@ -384,7 +384,7 @@ public class BikeControl : MonoBehaviour
 	}
 
 	IEnumerator waterWaiting(){
-		yield return new WaitForSeconds (3f);
+		yield return new WaitForSeconds (1f);
 		if (waterCount > 0) {
 			Game.instance.OnTouchZone();
 		}
