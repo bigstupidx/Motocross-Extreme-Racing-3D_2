@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DisplaySquareGoogleBannerSelfPos : MonoBehaviour {
+public class DisplayGoogleBannerSelfPos : MonoBehaviour {
 	
 	private UIWidget SelfWidget;
 	private float ScrHeight;
@@ -43,13 +43,13 @@ public class DisplaySquareGoogleBannerSelfPos : MonoBehaviour {
 		SelfWidget.UpdateAnchors();
 		
 		// Convert 300 and 250 to literal pixel values for the current resolution
-	//	#if UNITY_EDITOR
-	//		SelfWidget.width = 300;
-	//		SelfWidget.height = 250;
-	//	#elif
-			SelfWidget.width = Mathf.RoundToInt(((300 * SelfWidget.root.pixelSizeAdjustment) * SelfWidget.root.pixelSizeAdjustment) * 1f);
-			SelfWidget.height = Mathf.RoundToInt(((250 * SelfWidget.root.pixelSizeAdjustment) * SelfWidget.root.pixelSizeAdjustment) * 1f);
-	//	#endif
+		#if UNITY_EDITOR
+		SelfWidget.width = 300;
+		SelfWidget.height = 250;
+		#else
+		SelfWidget.width = Mathf.RoundToInt(((300 * SelfWidget.root.pixelSizeAdjustment) * (ScrDPI / 160f)) * SelfWidget.anchorCamera.orthographicSize);
+		SelfWidget.height = Mathf.RoundToInt(((250 * SelfWidget.root.pixelSizeAdjustment) * (ScrDPI / 160f)) * SelfWidget.anchorCamera.orthographicSize);
+		#endif
 		
 		// If we don't wait a frame before calling CalculateAbsoluteWidgetBounds then it will lie and give us the wrong values
 		StartCoroutine(CalculateAdPosition());
@@ -57,6 +57,8 @@ public class DisplaySquareGoogleBannerSelfPos : MonoBehaviour {
 	
 	private IEnumerator CalculateAdPosition()
 	{
+		// The UI with this might have just been instantiated so we should wait for a bit to be sure (or we'll be reading invalid values)
+		yield return new WaitForFixedUpdate();
 		yield return new WaitForEndOfFrame();
 		
 		// Get the absolute bounds of the widget
@@ -71,7 +73,7 @@ public class DisplaySquareGoogleBannerSelfPos : MonoBehaviour {
 		
 		// Calculate the literal pixel yPos based from the top edge
 		int yPos = Mathf.RoundToInt(ScrHeight - ScreenPoint.y);
-
+		
 		/*if(RemainingScreenPoint.x < (100f * SelfWidget.root.pixelSizeAdjustment) * (ScrDPI / 160f)){
 			SelfWidget.width = 300;
 			SelfWidget.height = 300;
@@ -80,8 +82,7 @@ public class DisplaySquareGoogleBannerSelfPos : MonoBehaviour {
 			return false;
 		}*/
 		// Note: On some devices with .5 DPI the ad size is actually 299x249 so remember to leave a few pixels for error (As if your ad goes off the screen by even 1 pixel no ad will be shown at all!)
-		// Note 2: This script was written before I knew RepositionBannerAd existed and that I could make my x and y relative to the top right corner T_T (Oh well this may be useful to someone)
-		AdMob_Manager.Instance.RepositionBanner(xPos, yPos); // Banner now loads on entering the main game, search for loadBanner in ButtonHandler.cs
+		AdMob_Manager.Instance.RepositionBanner(xPos, yPos);
 		AdMob_Manager.Instance.ShowBanner();
 	}
 }

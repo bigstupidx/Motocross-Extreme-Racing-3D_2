@@ -135,6 +135,31 @@ public class AdMob_Manager : MonoBehaviour
 			AdmobAdAgent.RetainGameObject(ref AdMobAndroidReady, gameObject, null);
 			AdIns = AdmobAd.Instance();
 		}
+		
+		ActionState.Add("LoadInterstitial", new ActionStateItems());
+		ActionState["LoadInterstitial"].items.Add(new ActionStateChecks(IntIsLoading, "Already loading!"));	// Don't load interstitial if one is already loading
+		ActionState["LoadInterstitial"].items.Add(new ActionStateChecks(IntIsReady, "Already ready!"));		// Don't load interstitial if one is already loaded
+		ActionState["LoadInterstitial"].items.Add(new ActionStateChecks(IntIsVisible, "Already visible!"));	// Don't load interstitial if one is already visible
+		
+		ActionState.Add("LoadBanner", new ActionStateItems());
+		ActionState["LoadBanner"].items.Add(new ActionStateChecks(BannerIsLoading, "Already loading!"));	// Don't load banner if one is already loading
+		ActionState["LoadBanner"].items.Add(new ActionStateChecks(BannerIsReady, "Already ready!"));		// Don't load banner if one is already loaded
+		ActionState["LoadBanner"].items.Add(new ActionStateChecks(BannerIsVisible, "Already visible!"));	// Don't load banner if one is already visible
+		
+		ActionState.Add("RepositionBanner", new ActionStateItems());
+		ActionState["RepositionBanner"].items.Add(new ActionStateChecks(BannerIsReady, "Needs to be visible!"));	// Don't reposition banner if it's not yet ready
+		
+		ActionState.Add("ShowInterstitial", new ActionStateItems());
+		ActionState["ShowInterstitial"].items.Add(new ActionStateChecks(IntIsVisible, "Already visible!"));	// Don't show interstitial if one is already visible
+		
+		ActionState.Add("ShowBanner", new ActionStateItems());
+		ActionState["ShowBanner"].items.Add(new ActionStateChecks(BannerIsVisible, "Already visible!")); 	// Don't show banner if one is already visible
+		
+		// Set the banner ID and interstitial ID for this app
+		AdIns.Init(bannerID, interstitialID, EnableTestMode);
+		
+		if(EnableTestMode)
+			DebugLog("This build has admob set to debug mode! Remember to disable before release!", true);
 	}
 	
 	void OnEnable()
@@ -186,31 +211,6 @@ public class AdMob_Manager : MonoBehaviour
 			DebugLog("AdMob is NOT enabled! No adverts will be triggered!", true);
 			return;
 		}
-		
-		ActionState.Add("LoadInterstitial", new ActionStateItems());
-		ActionState["LoadInterstitial"].items.Add(new ActionStateChecks(IntIsLoading, "Already loading!"));	// Don't load interstitial if one is already loading
-		ActionState["LoadInterstitial"].items.Add(new ActionStateChecks(IntIsReady, "Already ready!"));		// Don't load interstitial if one is already loaded
-		ActionState["LoadInterstitial"].items.Add(new ActionStateChecks(IntIsVisible, "Already visible!"));	// Don't load interstitial if one is already visible
-		
-		ActionState.Add("LoadBanner", new ActionStateItems());
-		ActionState["LoadBanner"].items.Add(new ActionStateChecks(BannerIsLoading, "Already loading!"));	// Don't load banner if one is already loading
-		ActionState["LoadBanner"].items.Add(new ActionStateChecks(BannerIsReady, "Already ready!"));		// Don't load banner if one is already loaded
-		ActionState["LoadBanner"].items.Add(new ActionStateChecks(BannerIsVisible, "Already visible!"));	// Don't load banner if one is already visible
-		
-		ActionState.Add("RepositionBanner", new ActionStateItems());
-		ActionState["RepositionBanner"].items.Add(new ActionStateChecks(BannerIsReady, "Needs to be visible!"));	// Don't reposition banner if it's not yet ready
-		
-		ActionState.Add("ShowInterstitial", new ActionStateItems());
-		ActionState["ShowInterstitial"].items.Add(new ActionStateChecks(IntIsVisible, "Already visible!"));	// Don't show interstitial if one is already visible
-		
-		ActionState.Add("ShowBanner", new ActionStateItems());
-		ActionState["ShowBanner"].items.Add(new ActionStateChecks(BannerIsVisible, "Already visible!")); 	// Don't show banner if one is already visible
-		
-		// Set the banner ID and interstitial ID for this app
-		AdIns.Init(bannerID, interstitialID, EnableTestMode);
-		
-		if(EnableTestMode)
-			DebugLog("This build has admob set to debug mode! Remember to disable before release!", true);
 		
 		// Load an interstitial if the option is selected
 		if(IntLoadOnStart)

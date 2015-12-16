@@ -452,11 +452,13 @@ public class Game : MonoBehaviour {
 
 	public void endOfFuel()
 	{
-		fuelOffMenu.SetActive (true);
+		FuelMenu.instance.menu.SetActive (true);
+		//fuelOffMenu.SetActive (true);
 	}
 	public void reloadFuel()
 	{
-		fuelOffMenu.SetActive (false);
+		//fuelOffMenu.SetActive (false);
+		FuelMenu.instance.menu.SetActive (false);
 		BikeManager.instance.ReloadFuel ();
 		AdMob_Manager.Instance.HideBanner ();
 		AdMob_Manager.Instance.ShowInterstitial ();
